@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -24,12 +25,13 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import static android.view.View.INVISIBLE;
+import static com.example.ritika.checkgif.R.drawable.zero;
 
 public class DrawActivity extends AppCompatActivity {
     int num;
     final float growTo = 31.0f;
     final long duration = 20;
-    TextView textView;
+    ImageView textView;
     String datapath="";
     MediaPlayer mediaPlayer;
     RelativeLayout activity_draw;
@@ -53,7 +55,8 @@ public class DrawActivity extends AppCompatActivity {
         ImageView drawHint = (ImageView) findViewById(R.id.hintDraw);
 
         drawHint.setVisibility(INVISIBLE);
-        TouchEventView view=new TouchEventView(this,datapath, Integer.toString(MainActivity.rightNumber), drawHint);
+        textView=(ImageView) findViewById(R.id.numTextView);
+        TouchEventView view=new TouchEventView(this,datapath, Integer.toString(MainActivity.rightNumber), drawHint, textView);
         activity_draw.addView(view);
         //setContentView(new TouchEventView(this,null));
         set();
@@ -111,14 +114,37 @@ public class DrawActivity extends AppCompatActivity {
 
     public void set(){
 
-        textView=(TextView)findViewById(R.id.numTextView);
+
         //Toast.makeText(this, Integer.toString(MainActivity.rightNumber), Toast.LENGTH_SHORT).show();
-        textView.setText(Integer.toString(MainActivity.rightNumber));
-        PropertyValuesHolder pvhX = PropertyValuesHolder.ofFloat("scaleX", growTo);
-        PropertyValuesHolder pvhY = PropertyValuesHolder.ofFloat("scaleY", growTo);
-        ObjectAnimator animator = ObjectAnimator.ofPropertyValuesHolder(textView, pvhX, pvhY);
-        animator.setDuration(duration * 2);
-        animator.start();
+        textView.setVisibility(View.VISIBLE);
+
+        if(MainActivity.rightNumber==0)
+            textView.setImageDrawable(getDrawable(zero));
+        else if (MainActivity.rightNumber==1)
+            textView.setImageResource(R.drawable.one);
+        else if (MainActivity.rightNumber==2)
+            textView.setImageResource(R.drawable.two);
+        else if (MainActivity.rightNumber==3)
+            textView.setImageResource(R.drawable.three);
+        else if (MainActivity.rightNumber==4)
+            textView.setImageResource(R.drawable.four);
+        else if (MainActivity.rightNumber==5)
+            textView.setImageResource(R.drawable.five);
+        else if (MainActivity.rightNumber==6)
+            textView.setImageResource(R.drawable.six);
+        else if (MainActivity.rightNumber==7)
+            textView.setImageResource(R.drawable.seven);
+        else if (MainActivity.rightNumber==8)
+            textView.setImageResource(R.drawable.eight);
+        else
+        textView.setImageResource(R.drawable.nine);
+        //textView.setImageDrawable(getDrawable(zero));
+
+        //PropertyValuesHolder pvhX = PropertyValuesHolder.ofFloat("scaleX", growTo);
+        //PropertyValuesHolder pvhY = PropertyValuesHolder.ofFloat("scaleY", growTo);
+        //ObjectAnimator animator = ObjectAnimator.ofPropertyValuesHolder(textView, pvhX, pvhY);
+        //animator.setDuration(duration * 2);
+        //animator.start();
 
         //To set the sound to draw particular number
         mediaPlayer=new MediaPlayer();

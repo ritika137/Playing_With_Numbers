@@ -31,6 +31,7 @@ public class TouchEventView extends View implements Runnable  {
     String datapath = "";
     MediaPlayer mpCorrect, mpWrong;
     ImageView drawHint;
+    ImageView textView;
 
 
     public boolean isDrawable() {
@@ -76,7 +77,7 @@ public class TouchEventView extends View implements Runnable  {
     }
 
 
-    public TouchEventView(Context context, String datapath, String letter, ImageView imageViewObject) {
+    public TouchEventView(Context context, String datapath, String letter, ImageView imageViewObject, ImageView makeInvisible) {
         super(context);
         isDrawable = true;
         setupDrawing();
@@ -89,6 +90,7 @@ public class TouchEventView extends View implements Runnable  {
         is_correct=false;
         mpCorrect=new MediaPlayer();
         mpCorrect=MediaPlayer.create(getContext(),R.raw.correct);
+        textView = makeInvisible;
 
         drawHint = imageViewObject;
 
@@ -328,6 +330,7 @@ public class TouchEventView extends View implements Runnable  {
                 else
                 {
 
+                    textView.setVisibility(INVISIBLE);
                     Toast.makeText(getContext(),"Value detected = "+val +" conf= "+ conf,Toast.LENGTH_SHORT).show();
                     mpWrong.start();
                     drawHint.setVisibility(VISIBLE);
