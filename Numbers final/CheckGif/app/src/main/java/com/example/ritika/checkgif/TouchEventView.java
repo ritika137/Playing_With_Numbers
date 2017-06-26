@@ -331,23 +331,23 @@ public class TouchEventView extends View implements Runnable  {
                     Toast.makeText(getContext(),"Value detected = "+val +" conf= "+ conf,Toast.LENGTH_SHORT).show();
                     mpWrong.start();
                     drawHint.setVisibility(VISIBLE);
-                    if(toCheck==0)
+                    if(toCheck=='0')
                     drawHint.setBackgroundResource(R.drawable.draw0);
-                    else if(toCheck==1)
+                    else if(toCheck=='1')
                         drawHint.setBackgroundResource(R.drawable.draw1);
-                    else if(toCheck==2)
+                    else if(toCheck=='2')
                         drawHint.setBackgroundResource(R.drawable.draw2);
-                    else if(toCheck==3)
+                    else if(toCheck=='3')
                         drawHint.setBackgroundResource(R.drawable.draw3);
-                    else if(toCheck==4)
+                    else if(toCheck=='4')
                         drawHint.setBackgroundResource(R.drawable.draw4);
-                    else if(toCheck==5)
+                    else if(toCheck=='5')
                         drawHint.setBackgroundResource(R.drawable.draw5);
-                    else if(toCheck==6)
+                    else if(toCheck=='6')
                         drawHint.setBackgroundResource(R.drawable.draw6);
-                    else if(toCheck==7)
+                    else if(toCheck=='7')
                         drawHint.setBackgroundResource(R.drawable.draw7);
-                    else if(toCheck==8)
+                    else if(toCheck=='8')
                         drawHint.setBackgroundResource(R.drawable.draw8);
                     else
                         drawHint.setBackgroundResource(R.drawable.draw9);
