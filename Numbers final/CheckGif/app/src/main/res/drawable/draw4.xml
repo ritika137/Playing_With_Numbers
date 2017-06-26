@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <animation-list xmlns:android="http://schemas.android.com/apk/res/android"
     android:oneshot="true">
-    <item android:drawable="@drawable/four1" android:duration="50" />
-    <item android:drawable="@drawable/four2" android:duration="50" />
-    <item android:drawable="@drawable/four3" android:duration="50" />
-    <item android:drawable="@drawable/four4" android:duration="50" />
-    <item android:drawable="@drawable/four5" android:duration="50" />
-    <item android:drawable="@drawable/four6" android:duration="50" />
-    <item android:drawable="@drawable/four7" android:duration="50" />
-    <item android:drawable="@drawable/four8" android:duration="50" />
-    <item android:drawable="@drawable/four9" android:duration="50" />
-    <item android:drawable="@drawable/four10" android:duration="50" />
-    <item android:drawable="@drawable/four11" android:duration="50" />
-    <item android:drawable="@drawable/four12" android:duration="50" />
-    <item android:drawable="@drawable/four13" android:duration="50" />
-    <item android:drawable="@drawable/four14" android:duration="50" />
-    <item android:drawable="@drawable/four15" android:duration="50" />
-    <item android:drawable="@drawable/four16" android:duration="50" />
+    <item android:drawable="@drawable/four1" android:duration="150" />
+    <item android:drawable="@drawable/four2" android:duration="150" />
+    <item android:drawable="@drawable/four3" android:duration="150" />
+    <item android:drawable="@drawable/four4" android:duration="150" />
+    <item android:drawable="@drawable/four5" android:duration="150" />
+    <item android:drawable="@drawable/four6" android:duration="150" />
+    <item android:drawable="@drawable/four7" android:duration="150" />
+    <item android:drawable="@drawable/four8" android:duration="150" />
+    <item android:drawable="@drawable/four9" android:duration="150" />
+    <item android:drawable="@drawable/four10" android:duration="150" />
+    <item android:drawable="@drawable/four11" android:duration="150" />
+    <item android:drawable="@drawable/four12" android:duration="150" />
+    <item android:drawable="@drawable/four13" android:duration="150" />
+    <item android:drawable="@drawable/four14" android:duration="150" />
+    <item android:drawable="@drawable/four15" android:duration="150" />
+    <item android:drawable="@drawable/four16" android:duration="150" />
 </animation-list>

@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <animation-list xmlns:android="http://schemas.android.com/apk/res/android"
     android:oneshot="true">
-    <item android:drawable="@drawable/seven1" android:duration="50" />
-    <item android:drawable="@drawable/seven2" android:duration="50" />
-    <item android:drawable="@drawable/seven3" android:duration="50" />
-    <item android:drawable="@drawable/seven4" android:duration="50" />
-    <item android:drawable="@drawable/seven5" android:duration="50" />
-    <item android:drawable="@drawable/seven6" android:duration="50" />
-    <item android:drawable="@drawable/seven7" android:duration="50" />
-    <item android:drawable="@drawable/seven8" android:duration="50" />
-    <item android:drawable="@drawable/seven9" android:duration="50" />
+    <item android:drawable="@drawable/seven1" android:duration="150" />
+    <item android:drawable="@drawable/seven2" android:duration="150" />
+    <item android:drawable="@drawable/seven3" android:duration="150" />
+    <item android:drawable="@drawable/seven4" android:duration="150" />
+    <item android:drawable="@drawable/seven5" android:duration="150" />
+    <item android:drawable="@drawable/seven6" android:duration="150" />
+    <item android:drawable="@drawable/seven7" android:duration="150" />
+    <item android:drawable="@drawable/seven8" android:duration="150" />
+    <item android:drawable="@drawable/seven9" android:duration="150" />
 
 </animation-list>

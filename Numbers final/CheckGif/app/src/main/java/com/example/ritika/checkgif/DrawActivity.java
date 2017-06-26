@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,6 +22,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+
+import static android.view.View.INVISIBLE;
 
 public class DrawActivity extends AppCompatActivity {
     int num;
@@ -44,8 +47,13 @@ public class DrawActivity extends AppCompatActivity {
         datapath = getFilesDir() + "/tesseract/";
         checkFile(new File(datapath + "tessdata/"));
 
+
+
         activity_draw=(RelativeLayout)findViewById(R.id.activity_draw);
-        TouchEventView view=new TouchEventView(this,datapath, Integer.toString(MainActivity.rightNumber));
+        ImageView drawHint = (ImageView) findViewById(R.id.hintDraw);
+
+        drawHint.setVisibility(INVISIBLE);
+        TouchEventView view=new TouchEventView(this,datapath, Integer.toString(MainActivity.rightNumber), drawHint);
         activity_draw.addView(view);
         //setContentView(new TouchEventView(this,null));
         set();
@@ -163,7 +171,7 @@ public class DrawActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
             }
-        }, duration * 500);
+        }, duration * 700);
 
     }
 

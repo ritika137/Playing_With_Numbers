@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.drawable.AnimationDrawable;
 import android.media.MediaPlayer;
 import android.text.method.Touch;
 import android.view.MotionEvent;
@@ -16,6 +17,8 @@ import android.os.Build;
 import android.util.Log;
 import android.graphics.Bitmap;
 import android.util.DisplayMetrics;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.Toast;
 import com.googlecode.tesseract.android.TessBaseAPI;
 import java.util.ArrayList;
@@ -27,6 +30,8 @@ import static android.widget.Toast.makeText;
 public class TouchEventView extends View implements Runnable  {
     String datapath = "";
     MediaPlayer mpCorrect, mpWrong;
+    ImageView drawHint;
+
 
     public boolean isDrawable() {
         return isDrawable;
@@ -71,7 +76,7 @@ public class TouchEventView extends View implements Runnable  {
     }
 
 
-    public TouchEventView(Context context, String datapath, String letter) {
+    public TouchEventView(Context context, String datapath, String letter, ImageView imageViewObject) {
         super(context);
         isDrawable = true;
         setupDrawing();
@@ -84,6 +89,8 @@ public class TouchEventView extends View implements Runnable  {
         is_correct=false;
         mpCorrect=new MediaPlayer();
         mpCorrect=MediaPlayer.create(getContext(),R.raw.correct);
+
+        drawHint = imageViewObject;
 
         mpWrong=new MediaPlayer();
         mpWrong=MediaPlayer.create(getContext(),R.raw.tryagain);
@@ -297,9 +304,9 @@ public class TouchEventView extends View implements Runnable  {
         protected void onPostExecute(ArrayList<String> result) {
             String conf= result.get(1);
             String val= result.get(0);
-            Toast.makeText(getContext(),"Value detected = "+val +" conf= "+ conf,Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getContext(),"Value detected = "+val +" conf= "+ conf,Toast.LENGTH_SHORT).show();
             try {
-                if (val.charAt(0) == toCheck && val.length() == 1&& Integer.valueOf(conf)>30 && !is_correct) {
+                if ((val.charAt(0) == toCheck) && (val.length() == 1 )&& (Integer.valueOf(conf)>30) && (!is_correct)) {
 
 
                     //int sdk = android.os.Build.VERSION.SDK_INT;
@@ -320,7 +327,34 @@ public class TouchEventView extends View implements Runnable  {
                 }
                 else
                 {
+
+                    Toast.makeText(getContext(),"Value detected = "+val +" conf= "+ conf,Toast.LENGTH_SHORT).show();
                     mpWrong.start();
+                    drawHint.setVisibility(VISIBLE);
+                    if(toCheck==0)
+                    drawHint.setBackgroundResource(R.drawable.draw0);
+                    else if(toCheck==1)
+                        drawHint.setBackgroundResource(R.drawable.draw1);
+                    else if(toCheck==2)
+                        drawHint.setBackgroundResource(R.drawable.draw2);
+                    else if(toCheck==3)
+                        drawHint.setBackgroundResource(R.drawable.draw3);
+                    else if(toCheck==4)
+                        drawHint.setBackgroundResource(R.drawable.draw4);
+                    else if(toCheck==5)
+                        drawHint.setBackgroundResource(R.drawable.draw5);
+                    else if(toCheck==6)
+                        drawHint.setBackgroundResource(R.drawable.draw6);
+                    else if(toCheck==7)
+                        drawHint.setBackgroundResource(R.drawable.draw7);
+                    else if(toCheck==8)
+                        drawHint.setBackgroundResource(R.drawable.draw8);
+                    else
+                        drawHint.setBackgroundResource(R.drawable.draw9);
+
+                    AnimationDrawable anim = (AnimationDrawable) drawHint.getBackground();
+                    anim.start();
+
                 }
             }
             catch (Exception e)

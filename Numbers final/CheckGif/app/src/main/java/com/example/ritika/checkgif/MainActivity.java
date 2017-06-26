@@ -202,47 +202,51 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
 
+
+        //handlerTimer.postDelayed(new Runnable(){
+          ///  public void run() {
+
+                addBalloon2.setBackgroundResource(R.drawable.create);
+                AnimationDrawable anim2 = (AnimationDrawable) addBalloon2.getBackground();
+                anim2.start();
+
+         //   }}, 1000);
+
+        //Handler handlerTimer3 = new Handler();
+        //handlerTimer.postDelayed(new Runnable(){
+           // public void run() {
+
+                addBalloon3.setBackgroundResource(R.drawable.create);
+                AnimationDrawable anim3 = (AnimationDrawable) addBalloon3.getBackground();
+                anim3.start();
+
+          //  }}, 2000);
+
+        //Handler handlerTimer4 = new Handler();
+       // handlerTimer.postDelayed(new Runnable(){
+           // public void run() {
+
+
+                addBalloon4.setBackgroundResource(R.drawable.create);
+                AnimationDrawable anim4 = (AnimationDrawable) addBalloon4.getBackground();
+                anim4.start();
+
+
+         //   }}, 3000);
         Handler handlerTimer = new Handler();
         handlerTimer.postDelayed(new Runnable(){
             public void run() {
+
                 number1.setVisibility(VISIBLE);
-                addBalloon2.setBackgroundResource(R.drawable.create);
-                AnimationDrawable anim = (AnimationDrawable) addBalloon2.getBackground();
-                anim.start();
-
-            }}, 1000);
-
-        //Handler handlerTimer3 = new Handler();
-        handlerTimer.postDelayed(new Runnable(){
-            public void run() {
                 number2.setVisibility(VISIBLE);
-                addBalloon3.setBackgroundResource(R.drawable.create);
-                AnimationDrawable anim = (AnimationDrawable) addBalloon3.getBackground();
-                anim.start();
-
-            }}, 2000);
-
-        //Handler handlerTimer4 = new Handler();
-        handlerTimer.postDelayed(new Runnable(){
-            public void run() {
-
                 number3.setVisibility(VISIBLE);
-                addBalloon4.setBackgroundResource(R.drawable.create);
-                AnimationDrawable anim = (AnimationDrawable) addBalloon4.getBackground();
-                anim.start();
-
-
-            }}, 3000);
-        handlerTimer.postDelayed(new Runnable(){
-            public void run() {
-
                 number4.setVisibility(VISIBLE);
                 addBalloon1.setBackgroundResource(R.drawable.frame_25);
                 addBalloon2.setBackgroundResource(R.drawable.frame_25);
                 addBalloon3.setBackgroundResource(R.drawable.frame_25);
                 addBalloon4.setBackgroundResource(R.drawable.frame_25);
 
-            }}, 4000);
+            }}, 2000);
 
 
         addBalloon1.setOnClickListener(this);
@@ -254,7 +258,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         handlerTimer.postDelayed(new Runnable(){
             public void run() {
                 popNo.start();
-            }}, 4000);
+            }}, 2000);
 
         //
         ll=(LinearLayout)findViewById(R.id.BatchLayout);
