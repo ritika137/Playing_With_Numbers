@@ -3,10 +3,12 @@ package com.example.ritika.checkgif;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.AnimationDrawable;
 import android.media.MediaPlayer;
 import android.text.method.Touch;
@@ -29,9 +31,13 @@ import static android.widget.Toast.makeText;
 
 public class TouchEventView extends View implements Runnable  {
     String datapath = "";
-    MediaPlayer mpCorrect, mpWrong;
+    MediaPlayer mpCorrect, mpWrong, mpTryAgain;
     ImageView drawHint;
     ImageView textView;
+
+    int wrongTask;
+
+    Context mContext;
 
 
     public boolean isDrawable() {
@@ -79,6 +85,7 @@ public class TouchEventView extends View implements Runnable  {
 
     public TouchEventView(Context context, String datapath, String letter, ImageView imageViewObject, ImageView makeInvisible) {
         super(context);
+        mContext = context;
         isDrawable = true;
         setupDrawing();
         times_run=0;
@@ -95,8 +102,11 @@ public class TouchEventView extends View implements Runnable  {
         drawHint = imageViewObject;
 
         mpWrong=new MediaPlayer();
-        mpWrong=MediaPlayer.create(getContext(),R.raw.tryagain);
-        //mp = MediaPlayer.create(getContext(), R.raw.final_effect);
+        mpWrong=MediaPlayer.create(getContext(),R.raw.Not_correct);
+        wrongTask =0;
+        mpTryAgain=new MediaPlayer();
+        mpTryAgain=MediaPlayer.create(getContext(),R.raw.tryagain);
+
 
 
 
@@ -154,6 +164,8 @@ public class TouchEventView extends View implements Runnable  {
         this.setDrawingCacheEnabled(true);
 
     }
+
+
 
     @Override
     public void run()  {
@@ -308,7 +320,7 @@ public class TouchEventView extends View implements Runnable  {
             String val= result.get(0);
             //Toast.makeText(getContext(),"Value detected = "+val +" conf= "+ conf,Toast.LENGTH_SHORT).show();
             try {
-                if ((val.charAt(0) == toCheck) && (val.length() == 1 )&& (Integer.valueOf(conf)>30) && (!is_correct)) {
+                if ((val.charAt(0) == toCheck) && (val.length() == 1 )&& (Integer.valueOf(conf)>30) && (!is_correct) ) {
 
 
                     //int sdk = android.os.Build.VERSION.SDK_INT;
@@ -326,37 +338,60 @@ public class TouchEventView extends View implements Runnable  {
                     isDrawable = false;
                     is_correct=true;
 
+
+                    Intent i = new Intent(mContext,MainActivity.class);
+                    mContext.startActivity(i);
+                    //finish();
+
                 }
                 else
                 {
 
+                    //TODO CANVAS NOT GETTING CLEARED.
+                    drawCanvas.drawColor(0, PorterDuff.Mode.CLEAR);
+                    canvasBitmap.eraseColor(Color.TRANSPARENT);
+
+
                     textView.setVisibility(INVISIBLE);
                     Toast.makeText(getContext(),"Value detected = "+val +" conf= "+ conf,Toast.LENGTH_SHORT).show();
-                    mpWrong.start();
-                    drawHint.setVisibility(VISIBLE);
-                    if(toCheck=='0')
-                    drawHint.setBackgroundResource(R.drawable.draw0);
-                    else if(toCheck=='1')
-                        drawHint.setBackgroundResource(R.drawable.draw1);
-                    else if(toCheck=='2')
-                        drawHint.setBackgroundResource(R.drawable.draw2);
-                    else if(toCheck=='3')
-                        drawHint.setBackgroundResource(R.drawable.draw3);
-                    else if(toCheck=='4')
-                        drawHint.setBackgroundResource(R.drawable.draw4);
-                    else if(toCheck=='5')
-                        drawHint.setBackgroundResource(R.drawable.draw5);
-                    else if(toCheck=='6')
-                        drawHint.setBackgroundResource(R.drawable.draw6);
-                    else if(toCheck=='7')
-                        drawHint.setBackgroundResource(R.drawable.draw7);
-                    else if(toCheck=='8')
-                        drawHint.setBackgroundResource(R.drawable.draw8);
-                    else
-                        drawHint.setBackgroundResource(R.drawable.draw9);
 
-                    AnimationDrawable anim = (AnimationDrawable) drawHint.getBackground();
-                    anim.start();
+                    mpTryAgain.start();
+
+                    if(wrongTask<2) {
+                        drawHint.setVisibility(VISIBLE);
+                        if (toCheck == '0')
+                            drawHint.setBackgroundResource(R.drawable.draw0);
+                        else if (toCheck == '1')
+                            drawHint.setBackgroundResource(R.drawable.draw1);
+                        else if (toCheck == '2')
+                            drawHint.setBackgroundResource(R.drawable.draw2);
+                        else if (toCheck == '3')
+                            drawHint.setBackgroundResource(R.drawable.draw3);
+                        else if (toCheck == '4')
+                            drawHint.setBackgroundResource(R.drawable.draw4);
+                        else if (toCheck == '5')
+                            drawHint.setBackgroundResource(R.drawable.draw5);
+                        else if (toCheck == '6')
+                            drawHint.setBackgroundResource(R.drawable.draw6);
+                        else if (toCheck == '7')
+                            drawHint.setBackgroundResource(R.drawable.draw7);
+                        else if (toCheck == '8')
+                            drawHint.setBackgroundResource(R.drawable.draw8);
+                        else
+                            drawHint.setBackgroundResource(R.drawable.draw9);
+
+                        AnimationDrawable anim = (AnimationDrawable) drawHint.getBackground();
+                        anim.start();
+                        wrongTask++;
+                    }
+                    else
+                    {
+
+                        mpWrong.start();
+                        Intent i = new Intent(mContext,MainActivity.class);
+                        mContext.startActivity(i);
+                    }
+
 
                 }
             }
