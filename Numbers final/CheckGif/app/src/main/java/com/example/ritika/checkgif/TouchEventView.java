@@ -109,8 +109,23 @@ public class TouchEventView extends View implements Runnable  {
         mpTryAgain=new MediaPlayer();
         mpTryAgain=MediaPlayer.create(getContext(),R.raw.tryagain);
 
+        mpCorrect.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            public void onCompletion(MediaPlayer mp) {
+                mp.release();
+            }
+        });
 
+        mpWrong.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            public void onCompletion(MediaPlayer mp) {
+                mp.release();
+            }
+        });
 
+        mpTryAgain.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            public void onCompletion(MediaPlayer mp) {
+                mp.release();
+            }
+        });
 
 
     }
@@ -150,7 +165,6 @@ public class TouchEventView extends View implements Runnable  {
 //view given size
 
         super.onSizeChanged(w, h, oldw, oldh);
-
         canvasBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
         drawCanvas = new Canvas(canvasBitmap);
 
@@ -342,18 +356,12 @@ public class TouchEventView extends View implements Runnable  {
                             mContext.startActivity(i);
                         }}, 2000);
 
-
-
-
                 }
                 else
                 {
-
-                    //TODO CANVAS NOT GETTING CLEARED.
                     setupDrawing();
                     invalidate();
                     drawCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
-                    //drawCanvas.drawColor(0, PorterDuff.Mode.CLEAR);
                     canvasBitmap.eraseColor(Color.TRANSPARENT);
                     textView.setVisibility(INVISIBLE);
                     Toast.makeText(getContext(),"Value detected = "+val +" conf= "+ conf,Toast.LENGTH_SHORT).show();
@@ -390,7 +398,6 @@ public class TouchEventView extends View implements Runnable  {
                         AnimationDrawable anim = (AnimationDrawable) drawHint.getBackground();
                         anim.start();
                         wrongTask++;
-                        //Toast.makeText(getContext(), "wrong task: "+wrongTask, Toast.LENGTH_SHORT).show();
                     }
                     else
                     {
@@ -401,11 +408,7 @@ public class TouchEventView extends View implements Runnable  {
                                 Intent i = new Intent(mContext,MainActivity.class);
                                 mContext.startActivity(i);
                             }}, 2000);
-
-
                     }
-
-
                 }
             }
             catch (Exception e)
@@ -417,73 +420,4 @@ public class TouchEventView extends View implements Runnable  {
 
     }
 
-
 }
-
-/**
- * Created by nupur on 14/01/17.
-
-
-public class TouchEventView extends View {
-    private Paint paint= new Paint();
-    private Path path=new Path();
-    LinearLayout layout;
-    TextView textView;
-    int duration=1000;
-
-
-     public TouchEventView(Context ctx, AttributeSet attrs){
-         super(ctx,attrs);
-         paint.setAntiAlias(true);
-         paint.setStyle(Paint.Style.STROKE);
-         paint.setStrokeWidth(25f);
-         paint.setColor(Color.BLACK);
-         paint.setStrokeJoin(Paint.Join.ROUND);
-
-
-// To place the text view somewhere specific:
-//canvas.translate(0, 0);
-
-
-     }
-    public void set(){
-
-        //textView=(TextView)findViewById(R.id.numTextView);
-        //textView.setText(Integer.toString(MainActivity.rightNumber));
-        textView.setText("0");
-        PropertyValuesHolder pvhX = PropertyValuesHolder.ofFloat("scaleX", 33.0f);
-        PropertyValuesHolder pvhY = PropertyValuesHolder.ofFloat("scaleY", 33.0f);
-        ObjectAnimator animator = ObjectAnimator.ofPropertyValuesHolder(textView, pvhX, pvhY);
-        animator.setDuration(duration * 2);
-        animator.start();
-
-
-    }
-    @Override
-    protected void onDraw(final Canvas canvas){
-
-        canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.OVERLAY);
-        canvas.drawPath(path,paint);
-
-    }
-    @Override
-    public boolean onTouchEvent(MotionEvent event){
-        float xPos = event.getX();
-        float yPos = event.getY();
-        switch(event.getAction()){
-            case MotionEvent.ACTION_DOWN :
-                path.moveTo(xPos,yPos);
-                return  true;
-            case MotionEvent.ACTION_MOVE:
-                path.lineTo(xPos,yPos);
-                break;
-            case MotionEvent.ACTION_UP:
-                break;
-            default: return false;
-        }
-
-        invalidate();
-        return true;
-    }
-}
-*/

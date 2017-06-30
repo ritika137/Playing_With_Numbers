@@ -9,6 +9,7 @@ import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.os.Handler;
+import android.os.PowerManager;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
@@ -122,7 +123,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         number4 = (TextView) findViewById(R.id.textView4);
 
         popSound = MediaPlayer.create(this, R.raw.ballonpopshort);
+
+        popSound.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            public void onCompletion(MediaPlayer mp) {
+                mp.release();
+            }
+        });
+
         batch=MediaPlayer.create(this,R.raw.makeballoone1);
+
+        batch.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            public void onCompletion(MediaPlayer mp) {
+                mp.release();
+            }
+        });
 
         number1.setVisibility(INVISIBLE);
         number2.setVisibility(INVISIBLE);
@@ -200,40 +214,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
         // Delay mechanism
-
-
-
-
-        //handlerTimer.postDelayed(new Runnable(){
-          ///  public void run() {
-
                 addBalloon2.setBackgroundResource(R.drawable.create);
                 AnimationDrawable anim2 = (AnimationDrawable) addBalloon2.getBackground();
                 anim2.start();
 
-         //   }}, 1000);
-
-        //Handler handlerTimer3 = new Handler();
-        //handlerTimer.postDelayed(new Runnable(){
-           // public void run() {
-
                 addBalloon3.setBackgroundResource(R.drawable.create);
                 AnimationDrawable anim3 = (AnimationDrawable) addBalloon3.getBackground();
                 anim3.start();
-
-          //  }}, 2000);
-
-        //Handler handlerTimer4 = new Handler();
-       // handlerTimer.postDelayed(new Runnable(){
-           // public void run() {
-
 
                 addBalloon4.setBackgroundResource(R.drawable.create);
                 AnimationDrawable anim4 = (AnimationDrawable) addBalloon4.getBackground();
                 anim4.start();
 
 
-         //   }}, 3000);
         Handler handlerTimer = new Handler();
         handlerTimer.postDelayed(new Runnable(){
             public void run() {
@@ -258,16 +251,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         nextquestion();
         handlerTimer.postDelayed(new Runnable(){
             public void run() {
-                Log.i("error in next 1 ques","popNo");
-                if(popNo!=null && popNo.isPlaying())
-                    popNo.reset();
-                Log.i("error in next 2 ques","popNo");
                 try {
                     popNo.start();
                 }catch(Exception e){
                     Log.i("error: ",e.toString());
                 }
-                Log.i("error in next 3 ques","popNo");
             }}, 2000);
 
         //
@@ -285,8 +273,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void grow(TextView textView) {
-        //gets the x and y positions of the text view
-        //textView.setVisibility(View.VISIBLE);
+
         posx = textView.getLeft();
         posy = textView.getTop();
         height= textView.getHeight();
@@ -318,19 +305,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Handler handlerTimer = new Handler();
             handlerTimer.postDelayed(new Runnable(){
                 public void run() {
-                    Log.i("error in burst 1","popCorrect");
                     final MediaPlayer popCorrect;
                     popCorrect = MediaPlayer.create(MainActivity.this, R.raw.correct);
-                    Log.i("error in burst 2","popCorrect");
+
+                    popCorrect.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                        public void onCompletion(MediaPlayer mp) {
+                            mp.release();
+                        }
+                    });
                     popCorrect.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                         @Override
                         public void onPrepared(MediaPlayer mp) {
                             popCorrect.start();
                         }
                     });
-
-                    Log.i("error in burst 3","popCorrect");
-
                 }}, 800);
 
             batch.setOnErrorListener(new MediaPlayer.OnErrorListener() {
@@ -389,7 +377,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             totalSize=sharedPref.getInt("totalSize",0);
             imagesArrayList[totalSize]=newImageNo;
             totalSize++;
-            Log.i("val new tottal size",Integer.toString(totalSize));
+            Log.i("val new total size",Integer.toString(totalSize));
             SharedPreferences.Editor editor = sharedPref.edit();
             editor.putInt("imageV", imageV);
             editor.commit();
@@ -526,6 +514,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         Toast.makeText(this, "Pop the balloon with number " + Integer.toString(rightNumber),Toast.LENGTH_SHORT).show();
         setmediaplayer();
+
+        popNo.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            public void onCompletion(MediaPlayer mp) {
+                mp.release();
+            }
+        });
         popNo.start();
 
 
