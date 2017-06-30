@@ -390,18 +390,19 @@ public class TouchEventView extends View implements Runnable  {
                         AnimationDrawable anim = (AnimationDrawable) drawHint.getBackground();
                         anim.start();
                         wrongTask++;
-                        Toast.makeText(getContext(), "wrong task: "+wrongTask, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getContext(), "wrong task: "+wrongTask, Toast.LENGTH_SHORT).show();
                     }
                     else
                     {
+                        mpWrong.start();
                         Handler handlerTimer = new Handler();
                         handlerTimer.postDelayed(new Runnable(){
                             public void run() {
-                                mpWrong.start();
+                                Intent i = new Intent(mContext,MainActivity.class);
+                                mContext.startActivity(i);
                             }}, 2000);
 
-                        Intent i = new Intent(mContext,MainActivity.class);
-                        mContext.startActivity(i);
+
                     }
 
 

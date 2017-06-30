@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <animation-list xmlns:android="http://schemas.android.com/apk/res/android"
     android:oneshot="true">
+    <item android:drawable="@drawable/seven0" android:duration="150" />
     <item android:drawable="@drawable/seven1" android:duration="150" />
     <item android:drawable="@drawable/seven2" android:duration="150" />
     <item android:drawable="@drawable/seven3" android:duration="150" />
@@ -10,5 +11,7 @@
     <item android:drawable="@drawable/seven7" android:duration="150" />
     <item android:drawable="@drawable/seven8" android:duration="150" />
     <item android:drawable="@drawable/seven9" android:duration="150" />
+    <item android:drawable="@drawable/seven10" android:duration="150" />
+    <item android:drawable="@drawable/seven11" android:duration="150" />
 
 </animation-list>
