@@ -526,23 +526,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         Toast.makeText(this, "Pop the balloon with number " + Integer.toString(rightNumber),Toast.LENGTH_SHORT).show();
         setmediaplayer();
-        popNo.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(MediaPlayer mp) {
-                popNo.start();
-            }
-        });
+        popNo.start();
 
-//        popNo.setOnErrorListener(new MediaPlayer.OnErrorListener() {
-//            @Override
-//            public boolean onError(MediaPlayer mp, int what, int extra) {
-//                Log.i("here","error listener");
-//                mp.reset();
-//                setmediaplayer();
-//
-//                return true;
-//            }
-//        });
 
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putInt("previousNumber", rightNumber);

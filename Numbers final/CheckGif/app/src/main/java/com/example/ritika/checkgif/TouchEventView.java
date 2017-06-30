@@ -12,6 +12,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.drawable.AnimationDrawable;
 import android.media.MediaPlayer;
+import android.os.Handler;
 import android.text.method.Touch;
 import android.view.MotionEvent;
 import android.view.View;
@@ -331,12 +332,17 @@ public class TouchEventView extends View implements Runnable  {
 //                    Toast.makeText(getContext(), "Correct with " + conf + "% accuracy", Toast.LENGTH_SHORT).show();
                     //TTS to_speak = new TTS();
                     //to_speak.Speech(getContext(), "Very Good!! ");
-
+                    Handler handlerTimer = new Handler();
                     mpCorrect.start();
-                    isDrawable = false;
-                    is_correct=true;
-                    Intent i = new Intent(mContext,MainActivity.class);
-                    mContext.startActivity(i);
+                    handlerTimer.postDelayed(new Runnable(){
+                        public void run() {
+                            isDrawable = false;
+                            is_correct=true;
+                            Intent i = new Intent(mContext,MainActivity.class);
+                            mContext.startActivity(i);
+                        }}, 2000);
+
+
 
 
                 }
@@ -344,12 +350,11 @@ public class TouchEventView extends View implements Runnable  {
                 {
 
                     //TODO CANVAS NOT GETTING CLEARED.
+                    setupDrawing();
+                    invalidate();
                     drawCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
                     //drawCanvas.drawColor(0, PorterDuff.Mode.CLEAR);
                     canvasBitmap.eraseColor(Color.TRANSPARENT);
-                    //drawPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
-
-                    //setupDrawing();
                     textView.setVisibility(INVISIBLE);
                     Toast.makeText(getContext(),"Value detected = "+val +" conf= "+ conf,Toast.LENGTH_SHORT).show();
 
@@ -384,13 +389,17 @@ public class TouchEventView extends View implements Runnable  {
 
                         AnimationDrawable anim = (AnimationDrawable) drawHint.getBackground();
                         anim.start();
-                        //setupDrawing();
                         wrongTask++;
                         Toast.makeText(getContext(), "wrong task: "+wrongTask, Toast.LENGTH_SHORT).show();
                     }
                     else
                     {
-                        mpWrong.start();
+                        Handler handlerTimer = new Handler();
+                        handlerTimer.postDelayed(new Runnable(){
+                            public void run() {
+                                mpWrong.start();
+                            }}, 2000);
+
                         Intent i = new Intent(mContext,MainActivity.class);
                         mContext.startActivity(i);
                     }
