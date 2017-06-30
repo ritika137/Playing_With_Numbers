@@ -27,6 +27,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.StringTokenizer;
@@ -257,7 +258,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         nextquestion();
         handlerTimer.postDelayed(new Runnable(){
             public void run() {
-                popNo.start();
+                Log.i("error in next 1 ques","popNo");
+                if(popNo!=null && popNo.isPlaying())
+                    popNo.reset();
+                Log.i("error in next 2 ques","popNo");
+                try {
+                    popNo.start();
+                }catch(Exception e){
+                    Log.i("error: ",e.toString());
+                }
+                Log.i("error in next 3 ques","popNo");
             }}, 2000);
 
         //
@@ -302,16 +312,35 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             balloonBurst.setBackgroundResource(R.drawable.burst);
             AnimationDrawable anim = (AnimationDrawable) balloonBurst.getBackground();
             anim.start();
+
             popSound.start();
 
             Handler handlerTimer = new Handler();
             handlerTimer.postDelayed(new Runnable(){
                 public void run() {
-                    popNo = MediaPlayer.create(MainActivity.this, R.raw.correct);
-                    popNo.start();
+                    Log.i("error in burst 1","popCorrect");
+                    final MediaPlayer popCorrect;
+                    popCorrect = MediaPlayer.create(MainActivity.this, R.raw.correct);
+                    Log.i("error in burst 2","popCorrect");
+                    popCorrect.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                        @Override
+                        public void onPrepared(MediaPlayer mp) {
+                            popCorrect.start();
+                        }
+                    });
 
+                    Log.i("error in burst 3","popCorrect");
 
                 }}, 800);
+
+            batch.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+                @Override
+                public boolean onError(MediaPlayer mp, int what, int extra) {
+                    batch.reset();
+                    batch.start();
+                    return true;
+                }
+            });
 
             //To set the central animation of the batch
             handlerTimer.postDelayed(new Runnable(){
@@ -496,7 +525,38 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         balloon2 = new Balloon(2,i2);
 
         Toast.makeText(this, "Pop the balloon with number " + Integer.toString(rightNumber),Toast.LENGTH_SHORT).show();
+        setmediaplayer();
+        popNo.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                popNo.start();
+            }
+        });
 
+//        popNo.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+//            @Override
+//            public boolean onError(MediaPlayer mp, int what, int extra) {
+//                Log.i("here","error listener");
+//                mp.reset();
+//                setmediaplayer();
+//
+//                return true;
+//            }
+//        });
+
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putInt("previousNumber", rightNumber);
+        editor.commit();
+
+
+
+        number1.setText(Integer.toString(i1));
+        number2.setText(Integer.toString(i2));
+        number3.setText(Integer.toString(i3));
+        number4.setText(Integer.toString(i4));
+
+    }
+    public void setmediaplayer(){
         if(rightNumber==0){
             popNo = MediaPlayer.create(this, R.raw.pop0);
         }
@@ -528,19 +588,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             popNo = MediaPlayer.create(this, R.raw.pop9);
         }
 
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putInt("previousNumber", rightNumber);
-        editor.commit();
-
-
-
-        number1.setText(Integer.toString(i1));
-        number2.setText(Integer.toString(i2));
-        number3.setText(Integer.toString(i3));
-        number4.setText(Integer.toString(i4));
+        //popNo.start();
 
     }
-
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(Intent.ACTION_MAIN);

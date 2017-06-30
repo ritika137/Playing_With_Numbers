@@ -52,7 +52,6 @@ public class DrawActivity extends AppCompatActivity {
         ObjectAnimator animator = ObjectAnimator.ofPropertyValuesHolder(textView, pvhX, pvhY);
         animator.setDuration(duration * 2);
         animator.start();
-
         //To set the sound to draw particular number
         mediaPlayer=new MediaPlayer();
         if(MainActivity.rightNumber==0){

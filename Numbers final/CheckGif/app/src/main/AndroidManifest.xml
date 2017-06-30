@@ -7,6 +7,8 @@
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
+        android:hardwareAccelerated="false"
+        android:largeHeap="true"
         android:label="Playing With Numbers"
         android:noHistory="true"
         android:supportsRtl="true"
@@ -19,7 +21,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".DrawActivity" />
-        <activity android:name=".BatchActivity"></activity>
+        <activity android:name=".BatchActivity"/>
 
     </application>
 

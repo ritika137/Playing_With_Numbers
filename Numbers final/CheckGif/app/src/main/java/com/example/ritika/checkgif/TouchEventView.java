@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.graphics.drawable.AnimationDrawable;
 import android.media.MediaPlayer;
 import android.text.method.Touch;
@@ -102,7 +103,7 @@ public class TouchEventView extends View implements Runnable  {
         drawHint = imageViewObject;
 
         mpWrong=new MediaPlayer();
-        mpWrong=MediaPlayer.create(getContext(),R.raw.Not_correct);
+        mpWrong=MediaPlayer.create(getContext(),R.raw.not_correct);
         wrongTask =0;
         mpTryAgain=new MediaPlayer();
         mpTryAgain=MediaPlayer.create(getContext(),R.raw.tryagain);
@@ -115,8 +116,6 @@ public class TouchEventView extends View implements Runnable  {
 
 
     private void setupDrawing() {
-
-
         //get drawing area setup for interaction
 
         paint = new Paint();
@@ -320,7 +319,7 @@ public class TouchEventView extends View implements Runnable  {
             String val= result.get(0);
             //Toast.makeText(getContext(),"Value detected = "+val +" conf= "+ conf,Toast.LENGTH_SHORT).show();
             try {
-                if ((val.charAt(0) == toCheck) && (val.length() == 1 )&& (Integer.valueOf(conf)>30) && (!is_correct) ) {
+                if ( val != null && !val.isEmpty() && (val.charAt(0) == toCheck) && (val.length() == 1 )&& (Integer.valueOf(conf)>30) && (!is_correct) ) {
 
 
                     //int sdk = android.os.Build.VERSION.SDK_INT;
@@ -332,32 +331,35 @@ public class TouchEventView extends View implements Runnable  {
 //                    Toast.makeText(getContext(), "Correct with " + conf + "% accuracy", Toast.LENGTH_SHORT).show();
                     //TTS to_speak = new TTS();
                     //to_speak.Speech(getContext(), "Very Good!! ");
-                   mpCorrect.start();
 
-
+                    mpCorrect.start();
                     isDrawable = false;
                     is_correct=true;
-
-
                     Intent i = new Intent(mContext,MainActivity.class);
                     mContext.startActivity(i);
-                    //finish();
+
 
                 }
                 else
                 {
 
                     //TODO CANVAS NOT GETTING CLEARED.
-                    drawCanvas.drawColor(0, PorterDuff.Mode.CLEAR);
+                    drawCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
+                    //drawCanvas.drawColor(0, PorterDuff.Mode.CLEAR);
                     canvasBitmap.eraseColor(Color.TRANSPARENT);
+                    //drawPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
 
-
+                    //setupDrawing();
                     textView.setVisibility(INVISIBLE);
                     Toast.makeText(getContext(),"Value detected = "+val +" conf= "+ conf,Toast.LENGTH_SHORT).show();
 
-                    mpTryAgain.start();
+
 
                     if(wrongTask<2) {
+                        if(mpTryAgain.isPlaying()){
+                            mpTryAgain.reset();
+                        }
+                        mpTryAgain.start();
                         drawHint.setVisibility(VISIBLE);
                         if (toCheck == '0')
                             drawHint.setBackgroundResource(R.drawable.draw0);
@@ -382,11 +384,12 @@ public class TouchEventView extends View implements Runnable  {
 
                         AnimationDrawable anim = (AnimationDrawable) drawHint.getBackground();
                         anim.start();
+                        //setupDrawing();
                         wrongTask++;
+                        Toast.makeText(getContext(), "wrong task: "+wrongTask, Toast.LENGTH_SHORT).show();
                     }
                     else
                     {
-
                         mpWrong.start();
                         Intent i = new Intent(mContext,MainActivity.class);
                         mContext.startActivity(i);
