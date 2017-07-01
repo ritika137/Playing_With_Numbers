@@ -412,7 +412,7 @@ public class TouchEventView extends View implements Runnable  {
                     else
                     {
                         mpWrong.start();
-                        Toast.makeText(mContext, "MORE THAN 2 ", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(mContext, "MORE THAN 2 ", Toast.LENGTH_SHORT).show();
                         Handler handlerTimer = new Handler();
                         handlerTimer.postDelayed(new Runnable(){
                             public void run() {
