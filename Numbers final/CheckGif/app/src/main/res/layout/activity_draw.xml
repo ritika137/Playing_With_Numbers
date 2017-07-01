@@ -25,7 +25,7 @@
             android:id="@+id/numTextView"
 
             android:layout_gravity="center"
-            android:alpha="1"
+            android:alpha="0.7"
             />
 
         <ImageView
@@ -35,7 +35,7 @@
             android:layout_gravity="center"
             android:visibility="invisible"
             app:srcCompat="@drawable/frame_4"
-            android:alpha="0.4"/>
+            android:alpha="0.7"/>
 
 
 

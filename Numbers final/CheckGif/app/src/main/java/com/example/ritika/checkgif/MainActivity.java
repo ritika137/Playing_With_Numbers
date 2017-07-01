@@ -512,7 +512,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         balloon1= new Balloon(1,i1);
         balloon2 = new Balloon(2,i2);
 
-        Toast.makeText(this, "Pop the balloon with number " + Integer.toString(rightNumber),Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "Pop the balloon with number " + Integer.toString(rightNumber),Toast.LENGTH_SHORT).show();
         setmediaplayer();
 
         popNo.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {

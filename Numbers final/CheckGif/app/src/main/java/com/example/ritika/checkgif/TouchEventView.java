@@ -104,7 +104,7 @@ public class TouchEventView extends View implements Runnable  {
         drawHint = imageViewObject;
 
         mpWrong=new MediaPlayer();
-        mpWrong=MediaPlayer.create(getContext(),R.raw.not_correct);
+        mpWrong=MediaPlayer.create(getContext(),R.raw.un_correct);
         wrongTask =0;
         mpTryAgain=new MediaPlayer();
         mpTryAgain=MediaPlayer.create(getContext(),R.raw.tryagain);
@@ -364,7 +364,7 @@ public class TouchEventView extends View implements Runnable  {
                     drawCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
                     canvasBitmap.eraseColor(Color.TRANSPARENT);
                     textView.setVisibility(INVISIBLE);
-                    Toast.makeText(getContext(),"Value detected = "+val +" conf= "+ conf,Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getContext(),"Value detected = "+val +" conf= "+ conf,Toast.LENGTH_SHORT).show();
 
 
 
