@@ -359,20 +359,24 @@ public class TouchEventView extends View implements Runnable  {
                 }
                 else
                 {
+
                     setupDrawing();
                     invalidate();
                     drawCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
                     canvasBitmap.eraseColor(Color.TRANSPARENT);
                     textView.setVisibility(INVISIBLE);
+                    drawHint.setVisibility(INVISIBLE);
+
                     //Toast.makeText(getContext(),"Value detected = "+val +" conf= "+ conf,Toast.LENGTH_SHORT).show();
 
 
 
                     if(wrongTask<2) {
-                        if(mpTryAgain.isPlaying()){
-                            mpTryAgain.reset();
-                        }
-                        mpTryAgain.start();
+                        //drawHint.setVisibility(INVISIBLE);
+                        //Toast.makeText(mContext, "WT IS  "+wrongTask, Toast.LENGTH_SHORT).show();
+                        wrongTask = wrongTask+1;
+
+
                         drawHint.setVisibility(VISIBLE);
                         if (toCheck == '0')
                             drawHint.setBackgroundResource(R.drawable.draw0);
@@ -397,11 +401,18 @@ public class TouchEventView extends View implements Runnable  {
 
                         AnimationDrawable anim = (AnimationDrawable) drawHint.getBackground();
                         anim.start();
-                        wrongTask++;
+
+                        if(mpTryAgain.isPlaying()){
+                          mpTryAgain.reset();
+                        }
+
+                        mpTryAgain.start();
+
                     }
                     else
                     {
                         mpWrong.start();
+                        Toast.makeText(mContext, "MORE THAN 2 ", Toast.LENGTH_SHORT).show();
                         Handler handlerTimer = new Handler();
                         handlerTimer.postDelayed(new Runnable(){
                             public void run() {
