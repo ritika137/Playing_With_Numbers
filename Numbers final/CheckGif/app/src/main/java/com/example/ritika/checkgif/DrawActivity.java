@@ -56,11 +56,10 @@ public class DrawActivity extends AppCompatActivity {
 
         drawHint.setVisibility(INVISIBLE);
         textView=(ImageView) findViewById(R.id.numTextView);
-        if(createTouchView==true) {
+
             TouchEventView view = new TouchEventView(this, datapath, Integer.toString(MainActivity.rightNumber), drawHint, textView);
             activity_draw.addView(view);
-            createTouchView=false;
-        }
+
         //setContentView(new TouchEventView(this,null));
         set();
 

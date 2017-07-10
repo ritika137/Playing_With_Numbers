@@ -85,12 +85,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         getWindow().setFlags(
                 WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        try {
-            setContentView(R.layout.activity_main);
-        }
-        catch(Exception e){
-            Log.i("not handled",e.toString());
-        }
+
+        setContentView(R.layout.activity_main);
+
         popsound=true;
         popCorsound=true;
         call_next_activity=true;

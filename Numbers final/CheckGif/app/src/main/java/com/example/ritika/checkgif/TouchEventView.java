@@ -2,6 +2,7 @@ package com.example.ritika.checkgif;
 
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Canvas;
@@ -363,6 +364,7 @@ public class TouchEventView extends View implements Runnable  {
                                 Intent i = new Intent(mContext, MainActivity.class);
                                 mContext.startActivity(i);
                                 call_next_activity=false;
+                                ((Activity)(mContext)).finish();
                             }
                         }}, 2000);
 
@@ -431,6 +433,7 @@ public class TouchEventView extends View implements Runnable  {
                                     Intent i = new Intent(mContext, MainActivity.class);
                                     mContext.startActivity(i);
                                     call_next_activity=false;
+                                    ((Activity)(mContext)).finish();
                                 }
                             }}, 2000);
                     }
