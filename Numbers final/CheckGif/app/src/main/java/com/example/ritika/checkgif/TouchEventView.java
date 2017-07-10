@@ -36,7 +36,8 @@ public class TouchEventView extends View implements Runnable  {
     MediaPlayer mpCorrect, mpWrong, mpTryAgain;
     ImageView drawHint;
     ImageView textView;
-
+    Boolean check_again,call_next_activity;
+    int checkCount;
     int wrongTask;
 
     Context mContext;
@@ -87,6 +88,8 @@ public class TouchEventView extends View implements Runnable  {
 
     public TouchEventView(Context context, String datapath, String letter, ImageView imageViewObject, ImageView makeInvisible) {
         super(context);
+        check_again=true;
+        call_next_activity=true;
         mContext = context;
         isDrawable = true;
         setupDrawing();
@@ -278,7 +281,9 @@ public class TouchEventView extends View implements Runnable  {
 
 
                 try {
-                    new TheTask().execute();
+                    if(check_again==true) {
+                        new TheTask().execute();
+                    }
                 }
                 catch (Exception e)
                 {e.printStackTrace();}
@@ -346,14 +351,19 @@ public class TouchEventView extends View implements Runnable  {
 //                    Toast.makeText(getContext(), "Correct with " + conf + "% accuracy", Toast.LENGTH_SHORT).show();
                     //TTS to_speak = new TTS();
                     //to_speak.Speech(getContext(), "Very Good!! ");
+
                     Handler handlerTimer = new Handler();
+                    check_again=false;
                     mpCorrect.start();
                     handlerTimer.postDelayed(new Runnable(){
                         public void run() {
                             isDrawable = false;
                             is_correct=true;
-                            Intent i = new Intent(mContext,MainActivity.class);
-                            mContext.startActivity(i);
+                            if(call_next_activity==true) {
+                                Intent i = new Intent(mContext, MainActivity.class);
+                                mContext.startActivity(i);
+                                call_next_activity=false;
+                            }
                         }}, 2000);
 
                 }
@@ -412,12 +422,16 @@ public class TouchEventView extends View implements Runnable  {
                     else
                     {
                         mpWrong.start();
+                        check_again=false;
                         //Toast.makeText(mContext, "MORE THAN 2 ", Toast.LENGTH_SHORT).show();
                         Handler handlerTimer = new Handler();
                         handlerTimer.postDelayed(new Runnable(){
                             public void run() {
-                                Intent i = new Intent(mContext,MainActivity.class);
-                                mContext.startActivity(i);
+                                if(call_next_activity==true) {
+                                    Intent i = new Intent(mContext, MainActivity.class);
+                                    mContext.startActivity(i);
+                                    call_next_activity=false;
+                                }
                             }}, 2000);
                     }
                 }

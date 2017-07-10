@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Balloon balloon2;
     Balloon balloon3;
     Balloon balloon4;
-
+    Boolean popsound,popCorsound,call_next_activity,batchsound,batchcreate;
     int []imagesArrayList=new int[51];
 
     float size;
@@ -85,10 +85,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         getWindow().setFlags(
                 WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
-        setContentView(R.layout.activity_main);
-
-
+        try {
+            setContentView(R.layout.activity_main);
+        }
+        catch(Exception e){
+            Log.i("not handled",e.toString());
+        }
+        popsound=true;
+        popCorsound=true;
+        call_next_activity=true;
+        batchsound=true;
+        batchcreate=true;
         Display display = getWindowManager().getDefaultDisplay();
         Point size1 = new Point();
         display.getSize(size1);
@@ -127,6 +134,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         popSound.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             public void onCompletion(MediaPlayer mp) {
                 mp.release();
+                popsound=false;
             }
         });
 
@@ -135,6 +143,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         batch.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             public void onCompletion(MediaPlayer mp) {
                 mp.release();
+                batchsound=false;
             }
         });
 
@@ -285,9 +294,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         handler.postDelayed(new Runnable(){
             @Override
             public void run(){
-
-                startActivity(intent);
-                finish();
+                if(call_next_activity==true) {
+                    startActivity(intent);
+                    finish();
+                    call_next_activity=false;
+                }
             }
         }, (long) (duration * 4));
 
@@ -299,9 +310,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             balloonBurst.setBackgroundResource(R.drawable.burst);
             AnimationDrawable anim = (AnimationDrawable) balloonBurst.getBackground();
             anim.start();
-
-            popSound.start();
-
+            if(popsound == true) {
+                popSound.start();
+                popsound=false;
+            }
             Handler handlerTimer = new Handler();
             handlerTimer.postDelayed(new Runnable(){
                 public void run() {
@@ -311,12 +323,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     popCorrect.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                         public void onCompletion(MediaPlayer mp) {
                             mp.release();
+                            popCorsound=false;
                         }
                     });
                     popCorrect.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                         @Override
                         public void onPrepared(MediaPlayer mp) {
-                            popCorrect.start();
+                            if(popCorsound==true) {
+                                popCorrect.start();
+                                popCorsound=false;
+                            }
                         }
                     });
                 }}, 800);
@@ -333,93 +349,92 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             //To set the central animation of the batch
             handlerTimer.postDelayed(new Runnable(){
                 public void run() {
-                    batch.start();
-                    LinearLayout ll=(LinearLayout) findViewById(R.id.LinearLayout1);
-                    ll.setVisibility(INVISIBLE);
-                    ll=(LinearLayout) findViewById(R.id.LinearLayout2);
-                    ll.setVisibility(INVISIBLE);
-                    final ImageView zoom = (ImageView) findViewById(R.id.imageViewf);
-                    final Animation zoomAnimation = AnimationUtils.loadAnimation(MainActivity.this, R.anim.zoom);
-                    zoom.startAnimation(zoomAnimation);
+                    if(batchsound==true) {
+                        batch.start();
+                        batchsound = false;
 
+                        LinearLayout ll = (LinearLayout) findViewById(R.id.LinearLayout1);
+                        ll.setVisibility(INVISIBLE);
+                        ll = (LinearLayout) findViewById(R.id.LinearLayout2);
+                        ll.setVisibility(INVISIBLE);
+                        final ImageView zoom = (ImageView) findViewById(R.id.imageViewf);
+                        final Animation zoomAnimation = AnimationUtils.loadAnimation(MainActivity.this, R.anim.zoom);
+                        zoom.startAnimation(zoomAnimation);
+                    }
                 }}, 2000);
+            if(batchcreate==true) {
+                Random rand = new Random();
+                int newImageNo = rand.nextInt(5) + 1;
+                while (newImageNo == imgNo) {
+                    newImageNo = rand.nextInt(5) + 1;
+                }
 
-            Random rand=new Random();
-            int newImageNo=rand.nextInt(5)+1;
-            while(newImageNo==imgNo){
-                newImageNo=rand.nextInt(5)+1;
-            }
+                ImageView imageView;
 
-            ImageView imageView ;
-
-            if(imageV==1) {
-                imageView = (ImageView) findViewById(R.id.imageView1);
-                imageV++;
-            }
-            else if(imageV==2){
-                imageView = (ImageView) findViewById(R.id.imageView2);
-                imageV++;
-            }
-            else if(imageV==3){
-                imageView = (ImageView) findViewById(R.id.imageView3);
-                imageV++;
-            }
-            else if(imageV==4){
-                imageView = (ImageView) findViewById(R.id.imageView4);
-                imageV++;
-            }
-            else{
-                imageView = (ImageView) findViewById(R.id.imageView5);
-                imageV=1;
-            }
+                if (imageV == 1) {
+                    imageView = (ImageView) findViewById(R.id.imageView1);
+                    imageV++;
+                } else if (imageV == 2) {
+                    imageView = (ImageView) findViewById(R.id.imageView2);
+                    imageV++;
+                } else if (imageV == 3) {
+                    imageView = (ImageView) findViewById(R.id.imageView3);
+                    imageV++;
+                } else if (imageV == 4) {
+                    imageView = (ImageView) findViewById(R.id.imageView4);
+                    imageV++;
+                } else {
+                    imageView = (ImageView) findViewById(R.id.imageView5);
+                    imageV = 1;
+                }
 
 
-            totalSize=sharedPref.getInt("totalSize",0);
-            imagesArrayList[totalSize]=newImageNo;
-            totalSize++;
-            Log.i("val new total size",Integer.toString(totalSize));
-            SharedPreferences.Editor editor = sharedPref.edit();
-            editor.putInt("imageV", imageV);
-            editor.commit();
-            editor.putInt("totalSize", totalSize);
-            editor.commit();
-            editor.putInt("imgNo", newImageNo);
-            editor.commit();
-            StringBuilder str = new StringBuilder();
-            for (int i = 0; i < totalSize; i++) {
-                str.append(imagesArrayList[i]).append(",");
-            }
-            sharedPref.edit().putString("string", str.toString()).commit();
+                totalSize = sharedPref.getInt("totalSize", 0);
+                imagesArrayList[totalSize] = newImageNo;
+                totalSize++;
+                Log.i("val new total size", Integer.toString(totalSize));
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putInt("imageV", imageV);
+                editor.commit();
+                editor.putInt("totalSize", totalSize);
+                editor.commit();
+                editor.putInt("imgNo", newImageNo);
+                editor.commit();
+                StringBuilder str = new StringBuilder();
+                for (int i = 0; i < totalSize; i++) {
+                    str.append(imagesArrayList[i]).append(",");
+                }
+                sharedPref.edit().putString("string", str.toString()).commit();
 
-            String uri = "@drawable/image" + newImageNo;  // where myresource (without the extension) is the file
-            int imageResource = getResources().getIdentifier(uri, null, getPackageName());
-            final Drawable res = getResources().getDrawable(imageResource);
-            imageView.setImageDrawable(res);
+                String uri = "@drawable/image" + newImageNo;  // where myresource (without the extension) is the file
+                int imageResource = getResources().getIdentifier(uri, null, getPackageName());
+                final Drawable res = getResources().getDrawable(imageResource);
+                imageView.setImageDrawable(res);
 
-            //To set the central batch image
-            handlerTimer.postDelayed(new Runnable(){
-                public void run() {
-                    ImageView i=(ImageView)findViewById(R.id.imageViewf);
-                    i.setImageDrawable(res);
-                }}, 1000);
+                //To set the central batch image
+                handlerTimer.postDelayed(new Runnable() {
+                    public void run() {
+                        ImageView i = (ImageView) findViewById(R.id.imageViewf);
+                        i.setImageDrawable(res);
+                    }
+                }, 1000);
 
-            //reset();
-            if (rightNumberPosition == 1) {
-                number1.setVisibility(View.INVISIBLE);
-                grow(number1);
+                //reset();
+                if (rightNumberPosition == 1) {
+                    number1.setVisibility(View.INVISIBLE);
+                    grow(number1);
 
-            }
-            else if(rightNumberPosition == 2){
-                number2.setVisibility(View.INVISIBLE);
-                grow(number2);
-            }
-            else if(rightNumberPosition == 3){
-                number3.setVisibility(View.INVISIBLE);
-                grow(number3);
-            }
-            else if(rightNumberPosition == 4){
-                number4.setVisibility(View.INVISIBLE);
-                grow(number4);
+                } else if (rightNumberPosition == 2) {
+                    number2.setVisibility(View.INVISIBLE);
+                    grow(number2);
+                } else if (rightNumberPosition == 3) {
+                    number3.setVisibility(View.INVISIBLE);
+                    grow(number3);
+                } else if (rightNumberPosition == 4) {
+                    number4.setVisibility(View.INVISIBLE);
+                    grow(number4);
+                }
+                batchcreate=false;
             }
         }
         else

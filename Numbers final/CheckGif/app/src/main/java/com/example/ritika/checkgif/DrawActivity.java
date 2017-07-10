@@ -35,7 +35,7 @@ public class DrawActivity extends AppCompatActivity {
     String datapath="";
     MediaPlayer mediaPlayer;
     RelativeLayout activity_draw;
-
+    Boolean createTouchView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,7 +45,7 @@ public class DrawActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         setContentView(R.layout.activity_draw);
-
+        createTouchView=true;
         datapath = getFilesDir() + "/tesseract/";
         checkFile(new File(datapath + "tessdata/"));
 
@@ -56,8 +56,11 @@ public class DrawActivity extends AppCompatActivity {
 
         drawHint.setVisibility(INVISIBLE);
         textView=(ImageView) findViewById(R.id.numTextView);
-        TouchEventView view=new TouchEventView(this,datapath, Integer.toString(MainActivity.rightNumber), drawHint, textView);
-        activity_draw.addView(view);
+        if(createTouchView==true) {
+            TouchEventView view = new TouchEventView(this, datapath, Integer.toString(MainActivity.rightNumber), drawHint, textView);
+            activity_draw.addView(view);
+            createTouchView=false;
+        }
         //setContentView(new TouchEventView(this,null));
         set();
 
