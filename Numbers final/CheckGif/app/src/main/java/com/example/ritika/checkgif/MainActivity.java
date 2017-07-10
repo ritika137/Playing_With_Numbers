@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         editor.putInt("x", x);
         editor.commit();
 
-        if(x>10){
+        if(x>5){
 
             editor.clear();
             totalSize=0;
