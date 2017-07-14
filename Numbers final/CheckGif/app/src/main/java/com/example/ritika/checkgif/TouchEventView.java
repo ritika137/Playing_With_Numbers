@@ -22,6 +22,7 @@ import android.os.Build;
 import android.util.Log;
 import android.graphics.Bitmap;
 import android.util.DisplayMetrics;
+import android.view.animation.Animation;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -29,7 +30,12 @@ import com.googlecode.tesseract.android.TessBaseAPI;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import static android.support.v4.content.res.ResourcesCompat.getDrawable;
 import static android.widget.Toast.makeText;
+import static com.example.ritika.checkgif.R.drawable.happy;
+import static com.example.ritika.checkgif.R.drawable.sad;
+import static com.example.ritika.checkgif.R.drawable.zero;
 
 
 public class TouchEventView extends View implements Runnable  {
@@ -53,6 +59,12 @@ public class TouchEventView extends View implements Runnable  {
     }
 
     private boolean isDrawable;
+
+    int w1,w2, h1, h2;
+    float clearX=0, clearY=0;
+
+    int flag=0;
+
     //drawing path
     ExecutorService pool = Executors.newFixedThreadPool(10);
 
@@ -93,6 +105,7 @@ public class TouchEventView extends View implements Runnable  {
         call_next_activity=true;
         mContext = context;
         isDrawable = true;
+        flag=0;
         setupDrawing();
         times_run=0;
         toCheck=letter.charAt(0);
@@ -134,6 +147,22 @@ public class TouchEventView extends View implements Runnable  {
 
     }
 
+    static public float percentTransparent(Bitmap bm) {
+        final int width = bm.getWidth();
+        final int height = bm.getHeight();
+
+        int totalTransparent = 0;
+        for(int x = 0; x < width; x=x+5) {
+            for(int y = 0; y < height; y=y+5) {
+                if (bm.getPixel(x, y) == 0) {
+                    totalTransparent++;
+                }
+            }
+        }
+        return ((float)totalTransparent)/(width * height/25);
+
+    }
+
 
     private void setupDrawing() {
         //get drawing area setup for interaction
@@ -142,6 +171,8 @@ public class TouchEventView extends View implements Runnable  {
 
         drawPath = new Path();
         drawPaint = new Paint();
+
+        drawPath.reset();
 
         drawPaint.setColor(paintColor);
 
@@ -153,7 +184,7 @@ public class TouchEventView extends View implements Runnable  {
         y_min=dpHeight/2;
         x_max=dpWidth/2;
         y_max=dpHeight/2;
-        drawPaint.setStrokeWidth(25f);
+        drawPaint.setStrokeWidth(50f);
         drawPaint.setStyle(Paint.Style.STROKE);
         drawPaint.setStrokeJoin(Paint.Join.ROUND);
         drawPaint.setStrokeCap(Paint.Cap.ROUND);
@@ -167,6 +198,11 @@ public class TouchEventView extends View implements Runnable  {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
 //view given size
+
+        w1=w;
+        w2=oldw;
+        h1=h;
+        h2=oldh;
 
         super.onSizeChanged(w, h, oldw, oldh);
         canvasBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
@@ -230,7 +266,23 @@ public class TouchEventView extends View implements Runnable  {
     }
 
 
+    public void clear(float tx, float ty)
+    {
+        canvasBitmap = Bitmap.createBitmap(w1,h1 ,
+                Bitmap.Config.ARGB_8888);
 
+        clearX = tx;
+        clearY = ty;
+
+        Log.v("CKEAR X IS" + clearX, "CLEARY IS "+clearY);
+
+        wrongTask++;
+
+        flag=-25;
+
+        drawCanvas = new Canvas(canvasBitmap);
+
+    }
 
 
 
@@ -263,7 +315,7 @@ public class TouchEventView extends View implements Runnable  {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
 
-                //if(redValue==0&&greenValue==0 &&(blueValue==0|| blueValue==255))
+                //if(redValue==0&&greenValue==0 &&(blueValue==0|| blueValue==255)
                 drawPath.moveTo(touchX, touchY);
                 //mp.setLooping(true);
                 //mp.start();
@@ -272,13 +324,32 @@ public class TouchEventView extends View implements Runnable  {
                 break;
             case MotionEvent.ACTION_MOVE:
 
-                drawPath.lineTo(touchX, touchY);
+                if(flag==-25)
+                {
+                    //drawPath.lineTo(clearX, clearY);
+                    flag=0;
+                }
+                else
+                    drawPath.lineTo(touchX, touchY);
                 invalidate();
                 break;
             case MotionEvent.ACTION_UP:
-                //mp.pause();
-                drawCanvas.drawPath(drawPath, drawPaint);
-                invalidate();
+                float percent = percentTransparent(canvasBitmap);
+                Log.v("Percent_empty", String.valueOf(percent));
+                if (percent <= 1.00) {
+                    Log.v("Low", "Percent Empty");
+                    setupDrawing();
+                    clear(touchX, touchY);
+                    setupDrawing();
+                    invalidate();
+                    // Toast.makeText(getContext(), "Wrong", Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    drawCanvas.drawPath(drawPath, drawPaint);
+
+                    invalidate();
+                }
 
 
                 try {
@@ -310,7 +381,8 @@ public class TouchEventView extends View implements Runnable  {
 
             //bitmap = Bitmap.createScaledBitmap(bitmap,90,90,false);
             mTess.init(mdatapath, "eng",TessBaseAPI.OEM_TESSERACT_ONLY);
-           mTess.setVariable(TessBaseAPI.VAR_CHAR_WHITELIST, "0123456789");
+            mTess.setVariable(TessBaseAPI.VAR_CHAR_WHITELIST, "0123456789");
+
             mTess.setVariable(TessBaseAPI.VAR_CHAR_BLACKLIST, " /+_)!?-(*&^%$#@ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz");
 
             mTess.setImage(bitmap);
@@ -343,11 +415,17 @@ public class TouchEventView extends View implements Runnable  {
                 if ( val != null && !val.isEmpty() && (val.charAt(0) == toCheck) && (val.length() == 1 )&& (Integer.valueOf(conf)>30) && (!is_correct) ) {
 
 
+                    drawHint.setVisibility(INVISIBLE);
+                    setupDrawing();
+                    clear(0, 0);
+                    setupDrawing();
+                    invalidate();
+
                     //int sdk = android.os.Build.VERSION.SDK_INT;
                     //if(sdk < Build.VERSION_CODES.KITKAT)
                     //    Toast.makeText(getContext(),"Done",Toast.LENGTH_SHORT).show();
                     //else
-                      //  Toast.makeText(getContext(),"Done",Toast.LENGTH_SHORT).show();
+                    //  Toast.makeText(getContext(),"Done",Toast.LENGTH_SHORT).show();
 
 //                    Toast.makeText(getContext(), "Correct with " + conf + "% accuracy", Toast.LENGTH_SHORT).show();
                     //TTS to_speak = new TTS();
@@ -356,6 +434,20 @@ public class TouchEventView extends View implements Runnable  {
                     Handler handlerTimer = new Handler();
                     check_again=false;
                     mpCorrect.start();
+
+
+
+                    textView.getLayoutParams().height = 600;
+                    textView.getLayoutParams().width = 600;
+                    textView.requestLayout();
+
+                    textView.setImageDrawable(mContext.getDrawable(happy));
+
+                    textView.setVisibility(VISIBLE);
+
+
+
+
                     handlerTimer.postDelayed(new Runnable(){
                         public void run() {
                             isDrawable = false;
@@ -366,16 +458,23 @@ public class TouchEventView extends View implements Runnable  {
                                 call_next_activity=false;
                                 ((Activity)(mContext)).finish();
                             }
-                        }}, 2000);
+                        }}, 1000);
 
                 }
                 else
                 {
 
-                    setupDrawing();
-                    invalidate();
-                    drawCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
-                    canvasBitmap.eraseColor(Color.TRANSPARENT);
+//                    setupDrawing();
+//                    invalidate();
+//
+//                    drawCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
+//                    canvasBitmap.eraseColor(Color.TRANSPARENT);
+
+//                    setupDrawing();
+//                    clear();
+//                    setupDrawing();
+//                    invalidate();
+
                     textView.setVisibility(INVISIBLE);
                     drawHint.setVisibility(INVISIBLE);
 
@@ -383,10 +482,10 @@ public class TouchEventView extends View implements Runnable  {
 
 
 
-                    if(wrongTask<2) {
+                    if(wrongTask<3) {
                         //drawHint.setVisibility(INVISIBLE);
                         //Toast.makeText(mContext, "WT IS  "+wrongTask, Toast.LENGTH_SHORT).show();
-                        wrongTask = wrongTask+1;
+                        //wrongTask = wrongTask+1;
 
 
                         drawHint.setVisibility(VISIBLE);
@@ -412,10 +511,11 @@ public class TouchEventView extends View implements Runnable  {
                             drawHint.setBackgroundResource(R.drawable.draw9);
 
                         AnimationDrawable anim = (AnimationDrawable) drawHint.getBackground();
+
                         anim.start();
 
                         if(mpTryAgain.isPlaying()){
-                          mpTryAgain.reset();
+                            mpTryAgain.reset();
                         }
 
                         mpTryAgain.start();
@@ -423,9 +523,46 @@ public class TouchEventView extends View implements Runnable  {
                     }
                     else
                     {
+//                       drawHint.setVisibility(VISIBLE);
+//
+//                        if (toCheck == '0')
+//                            drawHint.setBackgroundResource(R.drawable.zero);
+//                        else if (toCheck == '1')
+//                            drawHint.setBackgroundResource(R.drawable.one);
+//                        else if (toCheck == '2')
+//                            drawHint.setBackgroundResource(R.drawable.two);
+//                        else if (toCheck == '3')
+//                            drawHint.setBackgroundResource(R.drawable.three);
+//                        else if (toCheck == '4')
+//                            drawHint.setBackgroundResource(R.drawable.four);
+//                        else if (toCheck == '5')
+//                            drawHint.setBackgroundResource(R.drawable.five);
+//                        else if (toCheck == '6')
+//                            drawHint.setBackgroundResource(R.drawable.six);
+//                        else if (toCheck == '7')
+//                            drawHint.setBackgroundResource(R.drawable.seven);
+//                        else if (toCheck == '8')
+//                            drawHint.setBackgroundResource(R.drawable.eight);
+//                        else
+//                            drawHint.setBackgroundResource(R.drawable.nine);
+                        drawHint.setVisibility(INVISIBLE);
+
+                        textView.getLayoutParams().height = 600;
+                        textView.getLayoutParams().width = 600;
+                        textView.requestLayout();
+
+                        setupDrawing();
+                        clear(0, 0);
+
+                        //invalidate();
+
                         mpWrong.start();
                         check_again=false;
                         //Toast.makeText(mContext, "MORE THAN 2 ", Toast.LENGTH_SHORT).show();
+                        textView.setImageDrawable(mContext.getDrawable(sad));
+
+                        textView.setVisibility(VISIBLE);
+
                         Handler handlerTimer = new Handler();
                         handlerTimer.postDelayed(new Runnable(){
                             public void run() {
@@ -435,7 +572,7 @@ public class TouchEventView extends View implements Runnable  {
                                     call_next_activity=false;
                                     ((Activity)(mContext)).finish();
                                 }
-                            }}, 2000);
+                            }}, 1000);
                     }
                 }
             }

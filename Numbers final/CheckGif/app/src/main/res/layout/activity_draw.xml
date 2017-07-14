@@ -18,15 +18,7 @@
         android:padding="20dp"
         >
 
-        <ImageView
-            android:layout_width="250dp"
-            android:layout_height="400dp"
 
-            android:id="@+id/numTextView"
-
-            android:layout_gravity="center"
-            android:alpha="0.7"
-            />
 
         <ImageView
             android:id="@+id/hintDraw"
@@ -36,6 +28,15 @@
             android:visibility="invisible"
             app:srcCompat="@drawable/frame_4"
             android:alpha="0.7"/>
+        <ImageView
+            android:layout_width="250dp"
+            android:layout_height="400dp"
+
+            android:id="@+id/numTextView"
+
+            android:layout_gravity="center"
+            android:alpha="0.7"
+            />
 
 
 

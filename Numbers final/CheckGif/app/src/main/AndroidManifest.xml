@@ -6,9 +6,9 @@
      <application
         android:allowBackup="true"
         android:icon="@mipmap/app_icon"
-        android:hardwareAccelerated="false"
+        android:hardwareAccelerated="true"
         android:largeHeap="true"
-        android:label="Playing With Numbers"
+        android:label="Numbers"
         android:noHistory="true"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
