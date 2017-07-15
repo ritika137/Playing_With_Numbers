@@ -354,7 +354,15 @@ public class TouchEventView extends View implements Runnable  {
 
                 try {
                     if(check_again==true) {
+                        if(x_min-5>=0 && y_min-5>=0 && (x_max-x_min+5)>=0 && (y_max-y_min+5)>=0)
                         new TheTask().execute();
+                        else
+                        {
+                            setupDrawing();
+                            clear(touchX, touchY);
+                            setupDrawing();
+                            invalidate();
+                        }
                     }
                 }
                 catch (Exception e)
@@ -397,8 +405,8 @@ public class TouchEventView extends View implements Runnable  {
                 result="`";
             to_send.add(result);
             to_send.add(conf);
-            Log.v("test", " "+result);
-            Log.v("conf",conf);
+            Log.v("test", "Result is :::: "+result);
+            Log.v("conf","CONF IS :::: " + conf);
 
 
             if (mTess != null)
@@ -410,7 +418,7 @@ public class TouchEventView extends View implements Runnable  {
         protected void onPostExecute(ArrayList<String> result) {
             String conf= result.get(1);
             String val= result.get(0);
-            //Toast.makeText(getContext(),"Value detected = "+val +" conf= "+ conf,Toast.LENGTH_SHORT).show();
+            Log.v("test","Value detected = "+val + " conf= "+ conf);
             try {
                 if ( val != null && !val.isEmpty() && (val.charAt(0) == toCheck) && (val.length() == 1 )&& (Integer.valueOf(conf)>30) && (!is_correct) ) {
 
