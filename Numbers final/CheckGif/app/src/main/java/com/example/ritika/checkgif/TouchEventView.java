@@ -87,6 +87,7 @@ public class TouchEventView extends View implements Runnable  {
     private int times_run;
 
     private boolean is_correct;
+    boolean mpTryAgainReleased ;
 
 
 
@@ -123,7 +124,10 @@ public class TouchEventView extends View implements Runnable  {
         mpWrong=new MediaPlayer();
         mpWrong=MediaPlayer.create(getContext(),R.raw.un_correct);
         wrongTask =0;
-        mpTryAgain=null;
+
+        mpTryAgain=new MediaPlayer();
+        mpTryAgainReleased = true;
+
         //mpTryAgain=MediaPlayer.create(getContext(),R.raw.tryagain);
 
         mpCorrect.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
@@ -515,13 +519,14 @@ public class TouchEventView extends View implements Runnable  {
                         AnimationDrawable anim = (AnimationDrawable) drawHint.getBackground();
 
                         anim.start();
-                        if(mpTryAgain==null ) {
-                            mpTryAgain=new MediaPlayer();
+                        if(mpTryAgainReleased) {
+
                             mpTryAgain = MediaPlayer.create(getContext(), R.raw.tryagain);
                             mpTryAgain.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                                 public void onCompletion(MediaPlayer mp) {
-                                    mp.release();
-                                    mp =null;
+                                     mp.release();
+                                     mpTryAgainReleased = true;
+
                                 }
                             });
                             mpTryAgain.start();
