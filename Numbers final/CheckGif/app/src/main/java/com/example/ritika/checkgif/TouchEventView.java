@@ -123,8 +123,8 @@ public class TouchEventView extends View implements Runnable  {
         mpWrong=new MediaPlayer();
         mpWrong=MediaPlayer.create(getContext(),R.raw.un_correct);
         wrongTask =0;
-        mpTryAgain=new MediaPlayer();
-        mpTryAgain=MediaPlayer.create(getContext(),R.raw.tryagain);
+        mpTryAgain=null;
+        //mpTryAgain=MediaPlayer.create(getContext(),R.raw.tryagain);
 
         mpCorrect.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             public void onCompletion(MediaPlayer mp) {
@@ -133,12 +133,6 @@ public class TouchEventView extends View implements Runnable  {
         });
 
         mpWrong.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            public void onCompletion(MediaPlayer mp) {
-                mp.release();
-            }
-        });
-
-        mpTryAgain.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             public void onCompletion(MediaPlayer mp) {
                 mp.release();
             }
@@ -521,13 +515,17 @@ public class TouchEventView extends View implements Runnable  {
                         AnimationDrawable anim = (AnimationDrawable) drawHint.getBackground();
 
                         anim.start();
-
-                        if(mpTryAgain.isPlaying()){
-                            mpTryAgain.reset();
+                        if(mpTryAgain==null ) {
+                            mpTryAgain=new MediaPlayer();
+                            mpTryAgain = MediaPlayer.create(getContext(), R.raw.tryagain);
+                            mpTryAgain.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                                public void onCompletion(MediaPlayer mp) {
+                                    mp.release();
+                                    mp =null;
+                                }
+                            });
+                            mpTryAgain.start();
                         }
-
-                        mpTryAgain.start();
-
                     }
                     else
                     {
