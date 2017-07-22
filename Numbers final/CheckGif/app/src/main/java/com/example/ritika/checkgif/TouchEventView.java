@@ -459,7 +459,7 @@ public class TouchEventView extends View implements Runnable  {
                             isDrawable = false;
                             is_correct=true;
                             if(call_next_activity==true) {
-                                Intent i = new Intent(mContext, MainActivity.class);
+                                Intent i = new Intent(mContext, Main2Activity.class);
                                 mContext.startActivity(i);
                                 call_next_activity=false;
                                 ((Activity)(mContext)).finish();
@@ -578,7 +578,7 @@ public class TouchEventView extends View implements Runnable  {
                         handlerTimer.postDelayed(new Runnable(){
                             public void run() {
                                 if(call_next_activity==true) {
-                                    Intent i = new Intent(mContext, MainActivity.class);
+                                    Intent i = new Intent(mContext, Main2Activity.class);
                                     mContext.startActivity(i);
                                     call_next_activity=false;
                                     ((Activity)(mContext)).finish();

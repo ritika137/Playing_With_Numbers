@@ -57,7 +57,7 @@ public class DrawActivity extends AppCompatActivity {
         drawHint.setVisibility(INVISIBLE);
         textView=(ImageView) findViewById(R.id.numTextView);
 
-            TouchEventView view = new TouchEventView(this, datapath, Integer.toString(MainActivity.rightNumber), drawHint, textView);
+            TouchEventView view = new TouchEventView(this, datapath, Integer.toString(Main2Activity.rightNumber), drawHint, textView);
             activity_draw.addView(view);
 
         //setContentView(new TouchEventView(this,null));
@@ -117,26 +117,26 @@ public class DrawActivity extends AppCompatActivity {
     public void set(){
 
 
-        //Toast.makeText(this, Integer.toString(MainActivity.rightNumber), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, Integer.toString(Main2Activity.rightNumber), Toast.LENGTH_SHORT).show();
         textView.setVisibility(View.VISIBLE);
 
-        if(MainActivity.rightNumber==0)
+        if(Main2Activity.rightNumber==0)
             textView.setImageDrawable(getDrawable(zero));
-        else if (MainActivity.rightNumber==1)
+        else if (Main2Activity.rightNumber==1)
             textView.setImageResource(R.drawable.one);
-        else if (MainActivity.rightNumber==2)
+        else if (Main2Activity.rightNumber==2)
             textView.setImageResource(R.drawable.two);
-        else if (MainActivity.rightNumber==3)
+        else if (Main2Activity.rightNumber==3)
             textView.setImageResource(R.drawable.three);
-        else if (MainActivity.rightNumber==4)
+        else if (Main2Activity.rightNumber==4)
             textView.setImageResource(R.drawable.four);
-        else if (MainActivity.rightNumber==5)
+        else if (Main2Activity.rightNumber==5)
             textView.setImageResource(R.drawable.five);
-        else if (MainActivity.rightNumber==6)
+        else if (Main2Activity.rightNumber==6)
             textView.setImageResource(R.drawable.six);
-        else if (MainActivity.rightNumber==7)
+        else if (Main2Activity.rightNumber==7)
             textView.setImageResource(R.drawable.seven);
-        else if (MainActivity.rightNumber==8)
+        else if (Main2Activity.rightNumber==8)
             textView.setImageResource(R.drawable.eight);
         else
         textView.setImageResource(R.drawable.nine);
@@ -150,31 +150,31 @@ public class DrawActivity extends AppCompatActivity {
 
         //To set the sound to draw particular number
         mediaPlayer=new MediaPlayer();
-        if(MainActivity.rightNumber==0){
+        if(Main2Activity.rightNumber==0){
             mediaPlayer=MediaPlayer.create(this,R.raw.draw0);
         }
-        else if(MainActivity.rightNumber==1){
+        else if(Main2Activity.rightNumber==1){
             mediaPlayer=MediaPlayer.create(this,R.raw.draw1);
         }
-        else if(MainActivity.rightNumber==2){
+        else if(Main2Activity.rightNumber==2){
             mediaPlayer=MediaPlayer.create(this,R.raw.draw2);
         }
-        else if(MainActivity.rightNumber==3){
+        else if(Main2Activity.rightNumber==3){
             mediaPlayer=MediaPlayer.create(this,R.raw.draw3);
         }
-        else if(MainActivity.rightNumber==4){
+        else if(Main2Activity.rightNumber==4){
             mediaPlayer=MediaPlayer.create(this,R.raw.draw4);
         }
-        else if(MainActivity.rightNumber==5){
+        else if(Main2Activity.rightNumber==5){
             mediaPlayer=MediaPlayer.create(this,R.raw.draw5);
         }
-        else if(MainActivity.rightNumber==6){
+        else if(Main2Activity.rightNumber==6){
             mediaPlayer=MediaPlayer.create(this,R.raw.draw6);
         }
-        else if(MainActivity.rightNumber==7){
+        else if(Main2Activity.rightNumber==7){
             mediaPlayer=MediaPlayer.create(this,R.raw.draw7);
         }
-        else if(MainActivity.rightNumber==8){
+        else if(Main2Activity.rightNumber==8){
             mediaPlayer=MediaPlayer.create(this,R.raw.draw8);
         }
         else{
@@ -195,7 +195,7 @@ public class DrawActivity extends AppCompatActivity {
         /*handler.postDelayed(new Runnable(){
             @Override
             public void run(){
-                Intent intent=new Intent(getApplicationContext(),MainActivity.class);
+                Intent intent=new Intent(getApplicationContext(),Main2Activity.class);
                 startActivity(intent);
                 finish();
             }

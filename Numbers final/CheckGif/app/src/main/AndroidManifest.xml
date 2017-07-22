@@ -3,25 +3,30 @@
     package="com.example.ritika.checkgif">
 
     <uses-permission android:name="android.permission.VIBRATE" />
-     <application
+
+    <application
         android:allowBackup="true"
-        android:icon="@mipmap/app_icon"
         android:hardwareAccelerated="true"
-        android:largeHeap="true"
+        android:icon="@mipmap/app_icon"
         android:label="Numbers"
+        android:largeHeap="true"
         android:noHistory="true"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".MainActivity" android:noHistory="true">
+        <activity
+            android:name=".MainActivity"
+            android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".DrawActivity" android:noHistory="true"/>
-        <activity android:name=".BatchActivity"/>
-
+        <activity
+            android:name=".DrawActivity"
+            android:noHistory="true" />
+        <activity android:name=".BatchActivity" />
+        <activity android:name=".Main2Activity"></activity>
     </application>
 
 </manifest>

@@ -46,7 +46,7 @@ public class BatchActivity extends AppCompatActivity {
 
 
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        totalSize=MainActivity.totalSize;
+        totalSize=Main2Activity.totalSize;
         //Log.i("totalsize",Integer.toString(totalSize));
         display();
     }
@@ -91,7 +91,7 @@ public class BatchActivity extends AppCompatActivity {
     }
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+        Intent intent = new Intent(getApplicationContext(),Main2Activity.class);
         startActivity(intent);
         finish();
     }
