@@ -38,6 +38,7 @@ import static com.example.ritika.checkgif.R.drawable.sad;
 import static com.example.ritika.checkgif.R.drawable.zero;
 
 
+
 public class TouchEventView extends View implements Runnable  {
     String datapath = "";
     MediaPlayer mpCorrect, mpWrong, mpTryAgain;
@@ -264,13 +265,13 @@ public class TouchEventView extends View implements Runnable  {
     }
 
 
-    public void clear(float tx, float ty)
+    public void clear()
     {
         canvasBitmap = Bitmap.createBitmap(w1,h1 ,
                 Bitmap.Config.ARGB_8888);
 
-        clearX = tx;
-        clearY = ty;
+        //clearX = tx;
+        //clearY = ty;
 
         Log.v("CKEAR X IS" + clearX, "CLEARY IS "+clearY);
 
@@ -333,42 +334,48 @@ public class TouchEventView extends View implements Runnable  {
                 break;
             case MotionEvent.ACTION_UP:
                 float percent = percentTransparent(canvasBitmap);
-                Log.v("Percent_empty", String.valueOf(percent));
-                if (percent <= 1.00) {
-                    Log.v("Low", "Percent Empty");
-                    setupDrawing();
-                    clear(touchX, touchY);
-                    setupDrawing();
-                    invalidate();
-                    // Toast.makeText(getContext(), "Wrong", Toast.LENGTH_SHORT).show();
-                }
-                else
-                {
+                //Log.v("Percent_empty", String.valueOf(percent));
+//                if (percent <= 1.00) {
+//                    Log.v("Low", "Percent Empty");
+//                    //setupDrawing();
+//                    clear();
+//                    setupDrawing();
+//                    invalidate();
+//                    // Toast.makeText(getContext(), "Wrong", Toast.LENGTH_SHORT).show();
+//                }
+//                else
+//                {
                     drawCanvas.drawPath(drawPath, drawPaint);
 
                     invalidate();
-                }
+ //               }
 
+                float check_x=canvasBitmap.getWidth(),check_y=canvasBitmap.getHeight();
 
                 try {
                     if(check_again==true) {
-                        if(x_min-5>=0 && y_min-5>=0 && (x_max-x_min+5)>=0 && (y_max-y_min+5)>=0)
-                        new TheTask().execute();
-                        else
-                        {
-                            setupDrawing();
-                            clear(touchX, touchY);
+                        Log.i("Check_Again", "True");
+
+
+                        if (x_max < check_x && y_max < check_y && x_min-5 >= 0 && y_min-5 >= 0 /*&& (x_max - x_min + 5) >= 0 && (y_max - y_min + 5) >= 0*/) {
+                            new TheTask().execute();
+                            clear();
                             setupDrawing();
                             invalidate();
                         }
+                        else {
+                            //setupDrawing();
+                            clear();
+                            setupDrawing();
+                            invalidate();
+                        }
+
                     }
                 }
                 catch (Exception e)
                 {e.printStackTrace();}
 
                 break;
-
-
         }
         return true;
     }
@@ -384,7 +391,8 @@ public class TouchEventView extends View implements Runnable  {
             bitmap = Bitmap.createScaledBitmap(bitmap,90,90,true);
             Log.v("test", "touch handles");
             Log.v("vals "," "+ String.valueOf(x_min)+ " "+String.valueOf(x_max)+ " "+String.valueOf(y_min)+ " "+String.valueOf(y_max));
-
+            float percent = percentTransparent(bitmap);
+            Log.v("test Percent_empty", String.valueOf(percent));
             //bitmap = Bitmap.createScaledBitmap(bitmap,90,90,false);
             mTess.init(mdatapath, "eng",TessBaseAPI.OEM_TESSERACT_ONLY);
             mTess.setVariable(TessBaseAPI.VAR_CHAR_WHITELIST, "0123456789");
@@ -422,8 +430,8 @@ public class TouchEventView extends View implements Runnable  {
 
 
                     drawHint.setVisibility(INVISIBLE);
-                    setupDrawing();
-                    clear(0, 0);
+                    //setupDrawing();
+                    clear();
                     setupDrawing();
                     invalidate();
 
@@ -524,9 +532,8 @@ public class TouchEventView extends View implements Runnable  {
                             mpTryAgain = MediaPlayer.create(getContext(), R.raw.tryagain);
                             mpTryAgain.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                                 public void onCompletion(MediaPlayer mp) {
-                                     mp.release();
-                                     mpTryAgainReleased = true;
-
+                                    mp.release();
+                                    mpTryAgainReleased = true;
                                 }
                             });
                             mpTryAgain.start();
@@ -563,7 +570,7 @@ public class TouchEventView extends View implements Runnable  {
                         textView.requestLayout();
 
                         setupDrawing();
-                        clear(0, 0);
+                        clear();
 
                         //invalidate();
 
@@ -571,7 +578,6 @@ public class TouchEventView extends View implements Runnable  {
                         check_again=false;
                         //Toast.makeText(mContext, "MORE THAN 2 ", Toast.LENGTH_SHORT).show();
                         textView.setImageDrawable(mContext.getDrawable(sad));
-
                         textView.setVisibility(VISIBLE);
 
                         Handler handlerTimer = new Handler();
