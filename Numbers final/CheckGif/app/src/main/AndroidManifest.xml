@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.ritika.checkgif">
+    package="com.awesome.fun.withNumbers">
 
     <uses-permission android:name="android.permission.VIBRATE" />
 
@@ -8,13 +8,13 @@
         android:allowBackup="true"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/app_icon"
-        android:label="Numbers"
+        android:label="Fun With Numbers"
         android:largeHeap="true"
         android:noHistory="true"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <activity
-            android:name=".MainActivity"
+            android:name="com.awesome.fun.withNumbers.MainActivity"
             android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,10 +23,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".DrawActivity"
+            android:name="com.awesome.fun.withNumbers.DrawActivity"
             android:noHistory="true" />
-        <activity android:name=".BatchActivity" />
-        <activity android:name=".Main2Activity"></activity>
+        <activity android:name="com.awesome.fun.withNumbers.BatchActivity" />
+        <activity android:name="com.awesome.fun.withNumbers.Main2Activity"></activity>
     </application>
 
 </manifest>
